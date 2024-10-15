@@ -1,5 +1,11 @@
 package Controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import Model.Account;
+import Service.AccountService;
+import Service.MessageService;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
@@ -9,6 +15,13 @@ import io.javalin.http.Context;
  * refer to prior mini-project labs and lecture materials for guidance on how a controller may be built.
  */
 public class SocialMediaController {
+    AccountService accountService;
+    MessageService messageService;
+
+    public SocialMediaController() {
+        accountService = new AccountService();
+        messageService = new MessageService();
+    }
     /**
      * In order for the test cases to work, you will need to write the endpoints in the startAPI() method, as the test
      * suite must receive a Javalin object from this method.
@@ -17,9 +30,12 @@ public class SocialMediaController {
     public Javalin startAPI() {
         Javalin app = Javalin.create();
         app.get("example-endpoint", this::exampleHandler);
+        app.post("/register", this::registerHandler);
+        app.post("/login", this::loginHandler);
 
         return app;
     }
+
 
     /**
      * This is an example handler for an example endpoint.
@@ -27,6 +43,27 @@ public class SocialMediaController {
      */
     private void exampleHandler(Context context) {
         context.json("sample text");
+    }
+    private void loginHandler(Context context) throws JsonProcessingException {
+        ObjectMapper om = new ObjectMapper();
+        Account account = om.readValue(context.body(), Account.class);
+        Account newAcc = accountService.loginAccount(account);
+        if(newAcc != null){
+            context.status(200).json(om.writeValueAsString(newAcc));
+        } else {
+            context.status(401);
+        }
+    }
+
+    private void registerHandler(Context context) throws JsonProcessingException {
+        ObjectMapper om = new ObjectMapper();
+        Account account = om.readValue(context.body(), Account.class);
+        Account newAcc = accountService.registerAccount(account);
+        if(newAcc != null){
+            context.status(200).json(om.writeValueAsString(newAcc));
+        } else {
+            context.status(400);
+        }
     }
 
 

@@ -33,7 +33,7 @@ public class SocialMediaController {
         app.get("example-endpoint", this::exampleHandler);
         app.post("/register", this::registerHandler);
         app.post("/login", this::loginHandler);
-        app.post("/messages", this::postMessageHandler)
+        app.post("/messages", this::postMessageHandler);
 
         return app;
     }

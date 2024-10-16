@@ -30,4 +30,8 @@ public class AccountService {
     public Account findAccountByUsername(String username) {
         return accountDAO.getAccountByUsername(username);
     }
+
+    public Account findAccountById(int id) {
+        return accountDAO.getAccountById(id);
+    }
 }

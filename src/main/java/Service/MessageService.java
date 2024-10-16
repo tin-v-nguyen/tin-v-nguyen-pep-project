@@ -1,5 +1,7 @@
 package Service;
 
+import java.util.List;
+
 import DAO.AccountDAO;
 import DAO.MessageDAO;
 import Model.Message;
@@ -21,6 +23,11 @@ public class MessageService {
     public MessageService(MessageDAO messageDAO) {
         this.messageDAO = messageDAO;
     }
+
+    public List<Message> getAllMessages() {
+        return messageDAO.getAllMessages();
+    }
+
     public Message postMessage(Message message) {
         if (message.getMessage_text().equals("") 
         || message.getMessage_text().length() > 255 

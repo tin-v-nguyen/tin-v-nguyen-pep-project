@@ -13,6 +13,22 @@ import Util.ConnectionUtil;
 
 public class MessageDAO {
 
+    // update message
+    public Message patchMessage(Message message){
+        Connection connection = ConnectionUtil.getConnection();
+        try {
+            String sql = "UPDATE message SET message_text = ? WHERE message_id = ?" ;
+            PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
+            preparedStatement.setString(1, message.getMessage_text());
+            preparedStatement.setInt(2, message.getMessage_id());
+            preparedStatement.executeUpdate();
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return getMessageById(message.getMessage_id());
+    }
+
     // delete message by id
     public Message deleteMessage(int id) {
         Message message = getMessageById(id);

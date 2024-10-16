@@ -23,6 +23,12 @@ public class MessageService {
     public MessageService(MessageDAO messageDAO) {
         this.messageDAO = messageDAO;
     }
+    public Message patchMessage(Message message) {
+        if (message.getMessage_text().equals("") 
+        || message.getMessage_text().length() > 255 
+        || getMessageById(message.message_id) == null) return null;
+        return messageDAO.patchMessage(message);
+    }
 
     public Message deleteMessage(int id) {
         return messageDAO.deleteMessage(id);

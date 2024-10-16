@@ -13,6 +13,22 @@ import Util.ConnectionUtil;
 
 public class MessageDAO {
 
+    // delete message by id
+    public Message deleteMessage(int id) {
+        Message message = getMessageById(id);
+        Connection connection = ConnectionUtil.getConnection();
+        
+        try {
+            String sql = "DELETE FROM message WHERE message_id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return message;
+    }
+
     // get message by id
     public Message getMessageById(int id) {
         Connection connection = ConnectionUtil.getConnection();

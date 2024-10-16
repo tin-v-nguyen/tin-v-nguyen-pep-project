@@ -40,8 +40,15 @@ public class SocialMediaController {
         app.get("/messages/{message_id}", this::getMessageByIdHandler);
         app.delete("/messages/{message_id}", this::deleteMessageHandler);
         app.patch("/messages/{message_id}", this::patchMessageHandler);
-
+        app.get("/accounts/{account_id}/messages", this::getMessagesByAccountHandler);
         return app;
+    }
+
+    private void getMessagesByAccountHandler(Context context) throws JsonProcessingException {
+        ObjectMapper om = new ObjectMapper();
+        int account_id = Integer.valueOf(context.pathParam("account_id"));
+        List<Message> messages = messageService.getMessagesByAccount(account_id);
+        context.status(200).json(om.writeValueAsString(messages));
     }
 
     private void patchMessageHandler(Context context) throws JsonProcessingException {

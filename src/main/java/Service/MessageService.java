@@ -23,6 +23,11 @@ public class MessageService {
     public MessageService(MessageDAO messageDAO) {
         this.messageDAO = messageDAO;
     }
+
+    public List<Message> getMessagesByAccount(int account_id) {
+        return messageDAO.getMessagesByAccount(account_id);
+    }
+
     public Message patchMessage(Message message) {
         if (message.getMessage_text().equals("") 
         || message.getMessage_text().length() > 255 
